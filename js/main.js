@@ -10,12 +10,12 @@ let BASE_URL = "https://676ac315863eaa5ac0df8bfd.mockapi.io/figma_asaxiy";
 import { useFetch, addData } from "./utils/index.js";
 
 function access() {
-    if (!localStorage.getItem("access")) {
-      localStorage.removeItem("access");
-      window.location.href = "./login.html";
-    }
+  if (!localStorage.getItem("access")) {
+    localStorage.removeItem("access");
+    window.location.href = "./login.html";
   }
-  access()
+}
+access();
 let request = useFetch();
 let cards = document.querySelector(".cards");
 
@@ -30,11 +30,12 @@ function getData(data) {
 cards.addEventListener("click", (e) => {
   let id = e.target.id;
   if (e.target.classList.contains("delete")) {
-    alert("delete btn bosgandan so'ng refresh bering ")
     deleteFunc(e.target.id);
   }
   if (e.target.classList.contains("edit")) {
-    alert("narxlar orasida joy bolmasa qorqmang home pageda joylar ochilgan boladi va edit qilib save btn bosgandan so'ng refresh bering ")
+    alert(
+      "narxlar orasida joy bolmasa qorqmang home pageda joylar ochilgan boladi va edit qilib save btn bosgandan so'ng refresh bering "
+    );
     edit(id);
   }
 });
@@ -48,6 +49,7 @@ function deleteFunc(id) {
 // edit
 function edit(id) {
   let imgp = document.querySelector("#imgp");
+  let imgdiv = document.querySelector(".imgdiv");
   let namep = document.querySelector("#namep");
   let havep = document.querySelector("#havep");
   let oldp = document.querySelector("#oldp");
@@ -65,9 +67,6 @@ function edit(id) {
   let monthpInput = document.createElement("input");
   let typepInput = document.createElement("input");
 
-// console.log(+pricep.textContent);
-
-
   imgpInput.type = "text";
   namepInput.type = "text";
   havepInput.type = "text";
@@ -76,7 +75,7 @@ function edit(id) {
   monthpaypInput.type = "text";
   monthpInput.type = "text";
   typepInput.type = "text";
-  
+
   imgpInput.value = imgp.src;
   namepInput.value = namep.textContent.trim();
   havepInput.value = havep.textContent.trim();
@@ -85,7 +84,8 @@ function edit(id) {
   monthpaypInput.value = monthpayp.textContent.trim();
   monthpInput.value = monthp.textContent.trim();
   typepInput.value = typep.textContent.trim().toUpperCase();
-  
+
+  imgpInput.style.width = "100%";
   namepInput.style.width = "100%";
   havepInput.style.width = "100%";
   oldpInput.style.width = "100%";
@@ -93,15 +93,18 @@ function edit(id) {
   monthpaypInput.style.width = "100%";
   monthpInput.style.width = "100%";
   typepInput.style.width = "100%";
+  imgdiv.style.paddingBottom = "30px"
 
-    namepInput.style.background = "rgb(211, 211, 211)";
-    havepInput.style.background = "rgb(0,0,0)";
-    oldpInput.style.background = "rgb(0,0,0)";
-    pricepInput.style.background = "rgb(211, 211, 211)";
-    monthpaypInput.style.background = "rgb(211, 211, 211)";
-    monthpInput.style.background = "rgb(211, 211, 211)";
-    typepInput.style.background = "rgb(211, 211, 211)";
+  imgpInput.style.background = "rgb(211, 211, 211)";
+  namepInput.style.background = "rgb(211, 211, 211)";
+  havepInput.style.background = "rgb(0,0,0)";
+  oldpInput.style.background = "rgb(0,0,0)";
+  pricepInput.style.background = "rgb(211, 211, 211)";
+  monthpaypInput.style.background = "rgb(211, 211, 211)";
+  monthpInput.style.background = "rgb(211, 211, 211)";
+  typepInput.style.background = "rgb(211, 211, 211)";
 
+  imgpInput.style.borderRadius = "5px";
   namepInput.style.borderRadius = "5px";
   havepInput.style.borderRadius = "5px";
   oldpInput.style.borderRadius = "5px";
@@ -110,6 +113,7 @@ function edit(id) {
   monthpInput.style.borderRadius = "5px";
   typepInput.style.borderRadius = "5px";
 
+  imgpInput.style.padding = "3px";
   namepInput.style.padding = "3px";
   havepInput.style.padding = "3px";
   oldpInput.style.padding = "3px";
@@ -118,7 +122,7 @@ function edit(id) {
   monthpInput.style.padding = "3px";
   typepInput.style.padding = "3px";
 
-  namep.textContent = "";
+  imgp.src = "";
   namep.textContent = "";
   havep.textContent = "";
   oldp.textContent = "";
@@ -127,6 +131,7 @@ function edit(id) {
   monthp.textContent = "";
   typep.textContent = "";
 
+  imgdiv.append(imgpInput);
   namep.append(namepInput);
   havep.append(havepInput);
   oldp.append(oldpInput);
@@ -140,6 +145,7 @@ function edit(id) {
   edt_btn.onclick = () => {
     editfunc(
       id,
+      imgpInput.value,
       namepInput.value,
       +havepInput.value,
       +oldpInput.value,
@@ -153,25 +159,28 @@ function edit(id) {
 
 function editfunc(
   id,
+  imgpInput,
   namepInput,
   havepInput,
   oldpInput,
   pricepInput,
   monthpaypInput,
-  monthpInput,typepInput
+  monthpInput,
+  typepInput
 ) {
-   fetch(`${BASE_URL}/${id}`, {
-     method: "PUT",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify({
-       name: namepInput,
-       have: havepInput,
-       old_price: oldpInput,
-       price: pricepInput,
-       month_payment: monthpaypInput,
-       month: monthpInput,
-       type: typepInput.toUpperCase()
-     }),
-   });
-   window.location.reload()
+  fetch(`${BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      img:imgpInput,
+      name: namepInput,
+      have: havepInput,
+      old_price: oldpInput,
+      price: pricepInput,
+      month_payment: monthpaypInput,
+      month: monthpInput,
+      type: typepInput.toUpperCase(),
+    }),
+  });
+  window.location.reload();
 }
