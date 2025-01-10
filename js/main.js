@@ -35,8 +35,8 @@ cards.addEventListener("click", (e) => {
     edit(e.target.id);
   }
 });
-function deleteFunc(id) {
-  fetch(`${BASE_URL}/${id}`, {
+async function deleteFunc(id) {
+  await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
@@ -44,7 +44,7 @@ function deleteFunc(id) {
 
 // edit
 function edit(id) {
-  let imgp = document.querySelector("#imgp");
+  // let imgp = document.querySelector("#imgp");
   let imgdiv = document.querySelector(".imgdiv");
   let namep = document.querySelector("#namep");
   let havep = document.querySelector("#havep");
@@ -63,7 +63,7 @@ function edit(id) {
   let monthpInput = document.createElement("input");
   let typepInput = document.createElement("input");
 
-  imgpInput.type = "text";
+  // imgpInput.type = "file";
   namepInput.type = "text";
   havepInput.type = "text";
   oldpInput.type = "text";
@@ -71,6 +71,26 @@ function edit(id) {
   monthpaypInput.type = "text";
   monthpInput.type = "text";
   typepInput.type = "text";
+
+  // let imgp = formdiv.img.files[0];
+  // let baseImg = "";
+  // let reader = new FileReader();
+  // reader.onload = function (e) {
+  //   baseImg = e.target.result;
+  //   // console.log(e.target.result);
+  //   fetch("https://676ac315863eaa5ac0df8bfd.mockapi.io/figma_asaxiy", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       img: baseImg,
+  //     }),
+  //   })
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     });
+  // };
+  // reader.readAsDataURL(imgp);
 
   fetch(`${BASE_URL}/${id}`,{
     method:"GET"

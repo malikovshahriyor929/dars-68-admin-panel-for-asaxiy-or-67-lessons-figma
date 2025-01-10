@@ -17,7 +17,7 @@ function addData(value, cards) {
   card.innerHTML = `
       <div class="rounded-[20px] bg-white p-3 cc relative">
       <i class="like_btn absolute top-3 left-4 fa-regular fa-heart"></i>
-      <div class="flex items-center justify-center imgdiv flex-col gap-5  ">
+      <form class="flex items-center justify-center imgdiv flex-col gap-5  ">
         <img
           id="imgp"
           class="h-[160px] object-cover"
@@ -26,7 +26,7 @@ function addData(value, cards) {
         }"
           alt=""
         />
-      </div>
+      </form>
       <div class="flex flex-col gap-2">
         <h2
           id="namep"
