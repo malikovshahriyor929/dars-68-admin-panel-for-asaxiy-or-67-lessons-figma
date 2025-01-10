@@ -8,37 +8,55 @@ function access() {
   }
 }
 access();
-
+let search_form = document.querySelector(".search_form");
+let logout = document.querySelector(".logout");
 let cards = document.querySelector(".cards");
-
-request({ url: "figma_asaxiy" }).then((data) => {
-  getData(data);
-});
-
+// felch
+function fetchfunc() {
+  request({ url: "figma_asaxiy" }).then((data) => {
+    getData(data), search(data);
+  });
+}
+// getdata
 function getData(data) {
   cards.innerHTML = "";
   data.forEach((value) => {
     addData(value, cards);
   });
 }
+// edit delete
 cards.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete")) {
     deleteFunc(e.target.id);
+    fetchfunc();
   }
   if (e.target.classList.contains("edit")) {
     // alert(
     //   "narxlar orasida joy bolmasa qorqmang home pageda joylar ochilgan boladi va edit qilib save btn bosgandan so'ng refresh bering "
     // );
-
-    // console.log(e.target.id);
-
     edit(e.target.id);
   }
 });
+//delete
 async function deleteFunc(id) {
   await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
+  });
+}
+//search
+function search(data) {
+  search_form.addEventListener("click", (e) => {
+    e.preventDefault();
+    let search_input = document.querySelector("#search_input");
+    if (search_input.value) {
+      let searchinput = search_input.value.toLowerCase().trim();
+      let searchData = data.filter((value) =>
+        value.name.toLowerCase().trim().includes(searchinput)
+      );
+      cards.innerHTML = "";
+      getData(searchData);
+    }
   });
 }
 
@@ -92,22 +110,22 @@ function edit(id) {
   // };
   // reader.readAsDataURL(imgp);
 
-  fetch(`${BASE_URL}/${id}`,{
-    method:"GET"
-  }).then(data=>data.json())
-  .then(data=>
-  (
-    
-      imgpInput.value = data.img ,
-      namepInput.value = data.name ,
-      havepInput.value = data.have ,
-      oldpInput.value = data.old_price ,
-      pricepInput.value = data.price ,
-      monthpaypInput.value = data.month_payment ,
-      monthpInput.value = data.month ,
-      typepInput.value = data.type 
-  ),
-  )
+  fetch(`${BASE_URL}/${id}`, {
+    method: "GET",
+  })
+    .then((data) => data.json())
+    .then(
+      (data) => (
+        (imgpInput.value = data.img),
+        (namepInput.value = data.name),
+        (havepInput.value = data.have),
+        (oldpInput.value = data.old_price),
+        (pricepInput.value = data.price),
+        (monthpaypInput.value = data.month_payment),
+        (monthpInput.value = data.month),
+        (typepInput.value = data.type)
+      )
+    );
 
   imgpInput.style.width = "100%";
   namepInput.style.width = "100%";
@@ -181,6 +199,13 @@ function edit(id) {
   };
 }
 
+// log out
+logout.addEventListener("click", (e) => {
+  localStorage.removeItem("access");
+  window.location.href = "./index.html";
+});
+
+// put edit data 
 async function editfunc(
   id,
   imgpInput,
@@ -192,7 +217,7 @@ async function editfunc(
   monthpInput,
   typepInput
 ) {
- await fetch(`${BASE_URL}/${id}`, {
+  await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -208,3 +233,4 @@ async function editfunc(
   });
   window.location.reload();
 }
+fetchfunc();
