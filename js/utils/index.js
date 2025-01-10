@@ -78,8 +78,3 @@ function addData(value, cards) {
   cards.append(card);
 }
 export { useFetch, addData };
-// const  useFunc = () =>{
-//     const request  = fetch({url,method,data}) = {
-// return
-//     }
-// }

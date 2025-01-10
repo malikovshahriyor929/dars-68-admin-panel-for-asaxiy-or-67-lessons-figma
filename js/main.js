@@ -1,14 +1,6 @@
 let BASE_URL = "https://676ac315863eaa5ac0df8bfd.mockapi.io/figma_asaxiy";
-
-// fetch({ BASE_URL },
-//     { method: "GET", headers: { "Content-Type": "application/json" } }
-// )
-//   .then((data) => data.json())
-//   .then((data) => console.log(data))
-//   .catch((err) => console.log(err));
-
 import { useFetch, addData } from "./utils/index.js";
-
+let request = useFetch();
 function access() {
   if (!localStorage.getItem("access")) {
     localStorage.removeItem("access");
@@ -16,10 +8,12 @@ function access() {
   }
 }
 access();
-let request = useFetch();
+
 let cards = document.querySelector(".cards");
 
-request({ url: "figma_asaxiy" }).then((data) => getData(data));
+request({ url: "figma_asaxiy" }).then((data) => {
+  getData(data);
+});
 
 function getData(data) {
   cards.innerHTML = "";
@@ -28,15 +22,17 @@ function getData(data) {
   });
 }
 cards.addEventListener("click", (e) => {
-  let id = e.target.id;
   if (e.target.classList.contains("delete")) {
     deleteFunc(e.target.id);
   }
   if (e.target.classList.contains("edit")) {
-    alert(
-      "narxlar orasida joy bolmasa qorqmang home pageda joylar ochilgan boladi va edit qilib save btn bosgandan so'ng refresh bering "
-    );
-    edit(id);
+    // alert(
+    //   "narxlar orasida joy bolmasa qorqmang home pageda joylar ochilgan boladi va edit qilib save btn bosgandan so'ng refresh bering "
+    // );
+
+    // console.log(e.target.id);
+
+    edit(e.target.id);
   }
 });
 function deleteFunc(id) {
@@ -76,14 +72,22 @@ function edit(id) {
   monthpInput.type = "text";
   typepInput.type = "text";
 
-  imgpInput.value = imgp.src;
-  namepInput.value = namep.textContent.trim();
-  havepInput.value = havep.textContent.trim();
-  oldpInput.value = oldp.textContent.trim();
-  pricepInput.value = pricep.textContent.trim();
-  monthpaypInput.value = monthpayp.textContent.trim();
-  monthpInput.value = monthp.textContent.trim();
-  typepInput.value = typep.textContent.trim().toUpperCase();
+  fetch(`${BASE_URL}/${id}`,{
+    method:"GET"
+  }).then(data=>data.json())
+  .then(data=>
+  (
+    
+      imgpInput.value = data.img ,
+      namepInput.value = data.name ,
+      havepInput.value = data.have ,
+      oldpInput.value = data.old_price ,
+      pricepInput.value = data.price ,
+      monthpaypInput.value = data.month_payment ,
+      monthpInput.value = data.month ,
+      typepInput.value = data.type 
+  ),
+  )
 
   imgpInput.style.width = "100%";
   namepInput.style.width = "100%";
@@ -93,7 +97,7 @@ function edit(id) {
   monthpaypInput.style.width = "100%";
   monthpInput.style.width = "100%";
   typepInput.style.width = "100%";
-  imgdiv.style.paddingBottom = "30px"
+  imgdiv.style.paddingBottom = "30px";
 
   imgpInput.style.background = "rgb(211, 211, 211)";
   namepInput.style.background = "rgb(211, 211, 211)";
@@ -157,7 +161,7 @@ function edit(id) {
   };
 }
 
-function editfunc(
+async function editfunc(
   id,
   imgpInput,
   namepInput,
@@ -168,11 +172,11 @@ function editfunc(
   monthpInput,
   typepInput
 ) {
-  fetch(`${BASE_URL}/${id}`, {
+ await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      img:imgpInput,
+      img: imgpInput,
       name: namepInput,
       have: havepInput,
       old_price: oldpInput,
