@@ -7,7 +7,7 @@ function access() {
     window.location.href = "./login.html";
   }
 }
-access();
+
 let search_form = document.querySelector(".search_form");
 let logout = document.querySelector(".logout");
 let cards = document.querySelector(".cards");
@@ -205,7 +205,7 @@ logout.addEventListener("click", (e) => {
   window.location.href = "./index.html";
 });
 
-// put edit data 
+// put edit data
 async function editfunc(
   id,
   imgpInput,
@@ -234,3 +234,4 @@ async function editfunc(
   window.location.reload();
 }
 fetchfunc();
+access();
