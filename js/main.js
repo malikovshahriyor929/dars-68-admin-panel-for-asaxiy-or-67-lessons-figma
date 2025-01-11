@@ -223,4 +223,4 @@ function editfunc(id, data) {
     .then(() => window.location.reload());
 }
 fetchfunc();
-// access()
+access()
