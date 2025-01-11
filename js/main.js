@@ -43,6 +43,7 @@ async function deleteFunc(id) {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
+  fetchfunc();
 }
 //search
 function search(data) {
@@ -56,6 +57,8 @@ function search(data) {
       );
       cards.innerHTML = "";
       getData(searchData);
+    } else {
+      fetchfunc();
     }
   });
 }
@@ -81,42 +84,30 @@ function edit(id) {
   let monthpInput = document.createElement("input");
   let typepInput = document.createElement("input");
 
-  // imgpInput.type = "file";
-  namepInput.type = "text";
-  havepInput.type = "text";
-  oldpInput.type = "text";
-  pricepInput.type = "text";
-  monthpaypInput.type = "text";
-  monthpInput.type = "text";
-  typepInput.type = "text";
+  [
+    imgpInput,
+    namepInput,
+    havepInput,
+    oldpInput,
+    pricepInput,
+    monthpaypInput,
+    monthpInput,
+    typepInput,
+  ].forEach((value) => {
+    value.style.width = "100%";
+    value.style.background = "rgb(211, 211, 211)";
+    value.style.borderRadius = "5px";
+    value.style.padding = "3px";
+    value.type = "text";
+  });
 
-  // let imgp = formdiv.img.files[0];
-  // let baseImg = "";
-  // let reader = new FileReader();
-  // reader.onload = function (e) {
-  //   baseImg = e.target.result;
-  //   // console.log(e.target.result);
-  //   fetch("https://676ac315863eaa5ac0df8bfd.mockapi.io/figma_asaxiy", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       img: baseImg,
-  //     }),
-  //   })
-  //     .then((data) => data.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     });
-  // };
-  // reader.readAsDataURL(imgp);
+  imgpInput.type = "file";
+  imgpInput.background = "dark-blue";
 
-  fetch(`${BASE_URL}/${id}`, {
-    method: "GET",
-  })
+  fetch(`${BASE_URL}/${id}`, { method: "GET" })
     .then((data) => data.json())
     .then(
       (data) => (
-        (imgpInput.value = data.img),
         (namepInput.value = data.name),
         (havepInput.value = data.have),
         (oldpInput.value = data.old_price),
@@ -127,44 +118,11 @@ function edit(id) {
       )
     );
 
-  imgpInput.style.width = "100%";
-  namepInput.style.width = "100%";
-  havepInput.style.width = "100%";
-  oldpInput.style.width = "100%";
-  pricepInput.style.width = "100%";
-  monthpaypInput.style.width = "100%";
-  monthpInput.style.width = "100%";
-  typepInput.style.width = "100%";
   imgdiv.style.paddingBottom = "30px";
 
-  imgpInput.style.background = "rgb(211, 211, 211)";
-  namepInput.style.background = "rgb(211, 211, 211)";
   havepInput.style.background = "rgb(0,0,0)";
   oldpInput.style.background = "rgb(0,0,0)";
-  pricepInput.style.background = "rgb(211, 211, 211)";
-  monthpaypInput.style.background = "rgb(211, 211, 211)";
-  monthpInput.style.background = "rgb(211, 211, 211)";
-  typepInput.style.background = "rgb(211, 211, 211)";
 
-  imgpInput.style.borderRadius = "5px";
-  namepInput.style.borderRadius = "5px";
-  havepInput.style.borderRadius = "5px";
-  oldpInput.style.borderRadius = "5px";
-  pricepInput.style.borderRadius = "5px";
-  monthpaypInput.style.borderRadius = "5px";
-  monthpInput.style.borderRadius = "5px";
-  typepInput.style.borderRadius = "5px";
-
-  imgpInput.style.padding = "3px";
-  namepInput.style.padding = "3px";
-  havepInput.style.padding = "3px";
-  oldpInput.style.padding = "3px";
-  pricepInput.style.padding = "3px";
-  monthpaypInput.style.padding = "3px";
-  monthpInput.style.padding = "3px";
-  typepInput.style.padding = "3px";
-
-  imgp.src = "";
   namep.textContent = "";
   havep.textContent = "";
   oldp.textContent = "";
@@ -181,22 +139,71 @@ function edit(id) {
   monthpayp.append(monthpaypInput);
   monthp.append(monthpInput);
   typep.append(typepInput);
+
   let editBtn = document.querySelector(".edit");
-  let edt_btn = editBtn;
-  edt_btn.textContent = "Save";
-  edt_btn.onclick = () => {
-    editfunc(
-      id,
-      imgpInput.value,
-      namepInput.value,
-      +havepInput.value,
-      +oldpInput.value,
-      +pricepInput.value,
-      +monthpaypInput.value,
-      +monthpInput.value,
-      typepInput.value
-    );
-  };
+  editBtn.textContent = "Save";
+  // let obj = {
+  //   id,
+  //   img: imgpInput.value,
+  //   name: namepInput.value,
+  //   have: +havepInput.value,
+  //   old_price: +oldpInput.value,
+  //   price: +pricepInput.value,
+  //   month_payment: +monthpaypInput.value,
+  //   month: +monthpInput.value,
+  //   type: typepInput.value.toUpperCase(),
+  // };
+  // let formdiv = document.querySelector(".formdiv");
+
+  // let file = imgpInput.files[0];
+  // // let baseImg = "";
+  // let reader = new FileReader();
+  // reader.onload = function (e) {
+  //   // baseImg = e.target.result;
+  //   // console.log(e.target.result);
+  //   let imgUrl = reader.result;
+  //   fetch("https://676ac315863eaa5ac0df8bfd.mockapi.io/figma_asaxiy", {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       img: imgUrl,
+  //     }),
+  //   })
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       console.log(imgUrl);
+  //       ;
+  //     });
+  // };
+  // reader.readAsDataURL(file);
+
+  editBtn.addEventListener("click", (e) => {
+    // console.log(imgpInput.files[0]);
+
+    let file = imgpInput.files[0];
+
+    // if (file) {
+    let reader = new FileReader();
+
+    reader.onload = function (e) {
+      let imgurl = e.target.result;
+      // console.log(imgurl);
+      editfunc(id, {
+        img: imgurl,
+        name: namepInput.value,
+        have: +havepInput.value,
+        old_price: +oldpInput.value,
+        price: +pricepInput.value,
+        month_payment: +monthpaypInput.value,
+        month: +monthpInput.value,
+        type: typepInput.value,
+      });
+    };
+    reader.readAsDataURL(file);
+    // } else {
+    // console.log(file);
+    // }
+  });
 }
 
 // log out
@@ -206,32 +213,14 @@ logout.addEventListener("click", (e) => {
 });
 
 // put edit data
-async function editfunc(
-  id,
-  imgpInput,
-  namepInput,
-  havepInput,
-  oldpInput,
-  pricepInput,
-  monthpaypInput,
-  monthpInput,
-  typepInput
-) {
-  await fetch(`${BASE_URL}/${id}`, {
+function editfunc(id, data) {
+  fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      img: imgpInput,
-      name: namepInput,
-      have: havepInput,
-      old_price: oldpInput,
-      price: pricepInput,
-      month_payment: monthpaypInput,
-      month: monthpInput,
-      type: typepInput.toUpperCase(),
-    }),
-  });
-  window.location.reload();
+    body: JSON.stringify(data),
+  })
+    .then((res) => res.json())
+    .then(() => window.location.reload());
 }
 fetchfunc();
-access();
+// access()
